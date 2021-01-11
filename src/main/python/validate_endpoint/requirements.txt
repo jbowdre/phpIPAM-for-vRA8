@@ -1,0 +1,11 @@
+# User libs go here
+#
+requests==2.21.0
+#
+# ----------------- #
+#
+# The following libs are needed by vra_ipam_utils to fetch the server certificate and return it to vRA in case it is self signed or not automatically trusted
+ndg-httpsclient
+pyopenssl
+pyasn1
+idna

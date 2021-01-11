@@ -1,0 +1,20 @@
+---
+exportVersion: "1"
+exportId: "@provider.name@_ValidateEndpoint"
+name: "@provider.name@_ValidateEndpoint"
+runtime: "python"
+entrypoint: "source.handler"
+inputs:
+  authCredentialsLink: "/core/auth/credentials/13c9cbade08950755898c4b89c4a0"
+  endpointProperties:
+    hostName: "sampleipam.sof-mbu.eng.vmware.com"
+timeoutSeconds: 600
+deploymentTimeoutSeconds: 600
+actionType: "SCRIPT"
+configuration:
+  const-providers:
+  - ""
+  const_azure-system_managed_identity: false
+actionTemplateName: "Custom script"
+actionTemplateNamespace: "com.vmware.automation.abx"
+memoryInMB: 600

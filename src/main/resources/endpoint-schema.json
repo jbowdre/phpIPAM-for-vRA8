@@ -1,0 +1,74 @@
+{
+   "layout":{
+      "pages":[
+         {
+            "id":"Sample IPAM",
+            "title":"Sample IPAM endpoint",
+            "sections":[
+               {
+                  "id":"section_1",
+                  "fields":[
+                     {
+                        "id":"apiAppId",
+                        "display":"textField"
+                     },
+                     {
+                        "id":"privateKeyId",
+                        "display":"textField"
+                     },
+                     {
+                        "id":"privateKey",
+                        "display":"passwordField"
+                     },
+                     {
+                        "id":"hostName",
+                        "display":"textField"
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   "schema":{
+      "apiAppId":{
+         "type":{
+            "dataType":"string"
+         },
+         "label":"API App ID",
+         "constraints":{
+            "required":true
+         }
+      },
+      "privateKeyId":{
+         "type":{
+            "dataType":"string"
+         },
+         "label":"Username",
+         "constraints":{
+            "required":true
+         }
+      },
+      "privateKey":{
+         "label":"Password",
+         "type":{
+            "dataType":"secureString"
+         },
+         "constraints":{
+            "required":true
+         }
+      },
+      "hostName":{
+         "type":{
+            "dataType":"string"
+         },
+         "label":"Hostname",
+         "constraints":{
+            "required":true
+         }
+      }
+   },
+   "options":{
+
+   }
+}

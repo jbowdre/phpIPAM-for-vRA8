@@ -1,0 +1,19 @@
+---
+name: "@provider.name@"
+description: "@provider.description@"
+version: "@provider.version@"
+
+abxConfig:
+  allocateIPActionId: "@provider.name@_AllocateIP"
+  deallocateIPActionId: "@provider.name@_DeallocateIP"
+  validateEndpointActionId: "@provider.name@_ValidateEndpoint"
+  updateResourceActionId: "@provider.name@_Update"
+  getIPRangesActionId: "@provider.name@_GetIPRanges"
+  allocateNetworkActionId: "@provider.name@_AllocateIPRange"
+  deallocateNetworkActionId: "@provider.name@_DeallocateIPRange"
+  getIPBlocksActionId: "@provider.name@_GetIPBlocks"
+
+properties:
+  @supportsAddressSpaces@ 
+  supportsUpdateRecord: @provider.supportsUpdateRecord@
+  supportsOnDemandNetworks: @provider.supportsOnDemandNetworks@
