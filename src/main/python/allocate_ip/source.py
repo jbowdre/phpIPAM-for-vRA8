@@ -12,6 +12,7 @@ conditions of the subcomponent's license, as noted in the LICENSE file.
 import requests
 from vra_ipam_utils.ipam import IPAM
 import logging
+from datetime import datetime
 
 """
 Example payload
@@ -76,16 +77,37 @@ def handler(context, inputs):
 
     return ipam.allocate_ip()
 
-def do_allocate_ip(self, auth_credentials, cert):
-    # Your implemention goes here
+def auth_session(uri, auth, cert):
+    auth_uri = f'{uri}/user/'
+    req = requests.post(auth_uri, auth=auth, verify=cert)
+    if req.status_code != 200:
+        raise requests.exceptions.RequestException('Authentication Failure!')
+    print('Auth success.')
+    token = {"token": req.json()['data']['token']}
+    return token
 
+def do_allocate_ip(self, auth_credentials, cert):
+#   Build variables
     username = auth_credentials["privateKeyId"]
     password = auth_credentials["privateKey"]
+    hostname = self.inputs["endpoint"]["endpointProperties"]["hostName"]
+    apiAppId = self.inputs["endpoint"]["endpointProperties"]["apiAppId"]
+    uri = f'https://{hostname}/api/{apiAppId}/'
+    auth = (username, password)
+
+    # Auth to API
+    token = auth_session(uri, auth, cert)
+    bundle = {
+      'uri': uri,
+      'token': token,
+      'cert': cert
+    }
+    
     allocation_result = []
     try:
         resource = self.inputs["resourceInfo"]
         for allocation in self.inputs["ipAllocations"]:
-            allocation_result.append(allocate(resource, allocation, self.context, self.inputs["endpoint"]))
+            allocation_result.append(allocate(resource, allocation, self.context, self.inputs["endpoint"], bundle))
     except Exception as e:
         try:
             rollback(allocation_result)
@@ -99,14 +121,14 @@ def do_allocate_ip(self, auth_credentials, cert):
         "ipAllocations": allocation_result
     }
 
-def allocate(resource, allocation, context, endpoint):
+def allocate(resource, allocation, context, endpoint, bundle):
 
     last_error = None
     for range_id in allocation["ipRangeIds"]:
 
         logging.info(f"Allocating from range {range_id}")
         try:
-            return allocate_in_range(range_id, resource, allocation, context, endpoint)
+            return allocate_in_range(range_id, resource, allocation, context, endpoint, bundle)
         except Exception as e:
             last_error = e
             logging.error(f"Failed to allocate from range {range_id}: {str(e)}")
@@ -115,22 +137,42 @@ def allocate(resource, allocation, context, endpoint):
     raise last_error
 
 
-def allocate_in_range(range_id, resource, allocation, context, endpoint):
-
-    ## Plug your implementation here to allocate an ip address
-    ## ...
-    ## Allocation successful
-
-    result = {
-        "ipAllocationId": allocation["id"],
+def allocate_in_range(range_id, resource, allocation, context, endpoint, bundle):
+    if int(allocation['size']) ==1:
+      vmName = resource['name']
+      owner = resource['owner']
+      uri = bundle['uri']
+      token = bundle['token']
+      cert = bundle['cert']
+      payload = {
+        'hostname': vmName,
+        'description': f'Reserved by vRA for {owner} at {datetime.now()}'
+      }
+      allocate_uri = f'{uri}/addresses/first_free/{str(range_id)}/'
+      req = requests.post(allocate_uri, data=payload, token=token, verify=cert)
+      result = {
+        "ipAllocationId": allocation['id'],
         "ipRangeId": range_id,
-        "ipVersion": "IPv4"
-    }
+        "ipVersion": 
+      }
 
-    result["ipAddresses"] = ["10.23.117.5"]
-    result["properties"] = {"customPropertyKey1": "customPropertyValue1"}
+      
 
-    return result
+
+      result = {
+          "ipAllocationId": allocation["id"],
+          "ipRangeId": range_id,
+          "ipVersion": "IPv4"
+      }
+
+      result["ipAddresses"] = ["10.23.117.5"]
+      result["properties"] = {"customPropertyKey1": "customPropertyValue1"}
+
+      return result
+    else:
+      # TODO: implement allocation of continuous block of IPs
+      pass
+    raise Exception("Not implemented")
 
 ## Rollback any previously allocated addresses in case this allocation request contains multiple ones and failed in the middle
 def rollback(allocation_result):
