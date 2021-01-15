@@ -27,7 +27,7 @@ In vRealize Automation:
 
 3. Give it a name, then click **Manage IPAM Providers > Import Provider Package**.
 
-4. Upload `phpIPAM.zip`.
+4. Upload `phpIPAM.zip` (get it [here](https://github.com/jbowdre/phpIPAM-for-vRA8/releases/latest)).
 
 5. Back at the **New Integration** page, click the **Provider** dropdown and select *phpIPAM*.
 
