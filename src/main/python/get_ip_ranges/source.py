@@ -63,8 +63,8 @@ def do_get_ip_ranges(self, auth_credentials, cert):
     # Request list of subnets
     subnet_uri = f'{uri}/subnets/'
     ipRanges = []
-    req = requests.get(subnet_uri, headers=token, verify=cert)
-    subnets = req.json()['data']
+    subnet_req = requests.get(f'{subnet_uri}?filter_by=isPool&filter_value=1', headers=token, verify=cert)
+    subnets = subnet_req.json()['data']
     for subnet in subnets:
         ipRange = {}
         ipRange['id'] = str(subnet['id'])
@@ -76,6 +76,10 @@ def do_get_ip_ranges(self, auth_credentials, cert):
         ipRange['startIPAddress'] = str(network[10])
         ipRange['endIPAddress'] = str(network[-6])
         ipRange['subnetPrefixLength'] = str(subnet['mask'])
+        ipRange['dnsServerAddresses'] = [server.strip() for server in str(subnet['nameservers']['namesrv1']).split(';')]
+        gw_req = requests.get(f"{subnet_uri}/{subnet['id']}/addresses/?filter_by=is_gateway&filter_value=1", headers=token, verify=cert)
+        if gw_req.status_code == 200:
+          ipRange['gatewayAddress'] = gw_req.json()['data'][0]['ip']
         logging.debug(ipRange)
         ipRanges.append(ipRange)
 
