@@ -82,12 +82,11 @@ def auth_session(uri, auth, cert):
     req = requests.post(auth_uri, auth=auth, verify=cert)
     if req.status_code != 200:
         raise requests.exceptions.RequestException('Authentication Failure!')
-    print('Auth success.')
     token = {"token": req.json()['data']['token']}
     return token
 
 def do_allocate_ip(self, auth_credentials, cert):
-#   Build variables
+    # Build variables
     username = auth_credentials["privateKeyId"]
     password = auth_credentials["privateKey"]
     hostname = self.inputs["endpoint"]["endpointProperties"]["hostName"]

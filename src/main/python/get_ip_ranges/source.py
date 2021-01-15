@@ -44,7 +44,6 @@ def auth_session(uri, auth, cert):
     req = requests.post(auth_uri, auth=auth, verify=cert)
     if req.status_code != 200:
         raise requests.exceptions.RequestException('Authentication Failure!')
-    print('Auth success.')
     token = {"token": req.json()['data']['token']}
     return token
 
@@ -63,8 +62,8 @@ def do_get_ip_ranges(self, auth_credentials, cert):
     # Request list of subnets
     subnet_uri = f'{uri}/subnets/'
     ipRanges = []
-    subnet_req = requests.get(f'{subnet_uri}?filter_by=isPool&filter_value=1', headers=token, verify=cert)
-    subnets = subnet_req.json()['data']
+    subnets = requests.get(f'{subnet_uri}?filter_by=isPool&filter_value=1', headers=token, verify=cert)
+    subnets = subnets.json()['data']
     for subnet in subnets:
         ipRange = {}
         ipRange['id'] = str(subnet['id'])
@@ -79,7 +78,8 @@ def do_get_ip_ranges(self, auth_credentials, cert):
         ipRange['dnsServerAddresses'] = [server.strip() for server in str(subnet['nameservers']['namesrv1']).split(';')]
         gw_req = requests.get(f"{subnet_uri}/{subnet['id']}/addresses/?filter_by=is_gateway&filter_value=1", headers=token, verify=cert)
         if gw_req.status_code == 200:
-          ipRange['gatewayAddress'] = gw_req.json()['data'][0]['ip']
+          gateway = gw_req.json()['data'][0]['ip']
+          ipRange['gatewayAddress'] = gateway
         logging.debug(ipRange)
         ipRanges.append(ipRange)
 
