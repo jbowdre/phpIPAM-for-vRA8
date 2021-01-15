@@ -1,6 +1,7 @@
 /target/
 /test.py
 /venv_tango/
+/.vscode/
 
 __pycache__/
 *.py[cod]
