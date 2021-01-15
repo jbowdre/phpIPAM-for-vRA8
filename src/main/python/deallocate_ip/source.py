@@ -65,31 +65,52 @@ def handler(context, inputs):
 
     return ipam.deallocate_ip()
 
-def do_deallocate_ip(self, auth_credentials, cert):
-    # Your implemention goes here
+def auth_session(uri, auth, cert):
+    auth_uri = f'{uri}/user/'
+    req = requests.post(auth_uri, auth=auth, verify=cert)
+    if req.status_code != 200:
+      raise requests.exceptions.RequestException('Authentication Failure!')
+    token = {"token": req.json()['data']['token']}
+    return token
 
+def do_deallocate_ip(self, auth_credentials, cert):
+    # Build variables
     username = auth_credentials["privateKeyId"]
     password = auth_credentials["privateKey"]
+    hostname = self.inputs["endpoint"]["endpointProperties"]["hostName"]
+    apiAppId = self.inputs["endpoint"]["endpointProperties"]["apiAppId"]
+    uri = f'https://{hostname}/api/{apiAppId}/'
+    auth = (username, password)
+
+    # Auth to API
+    token = auth_session(uri, auth, cert)
+    bundle = {
+      'uri': uri,
+      'token': token,
+      'cert': cert
+    }
+
     deallocation_result = []
     for deallocation in self.inputs["ipDeallocations"]:
-        deallocation_result.append(deallocate(self.inputs["resourceInfo"], deallocation))
+        deallocation_result.append(deallocate(self.inputs["resourceInfo"], deallocation, bundle))
 
     assert len(deallocation_result) > 0
     return {
         "ipDeallocations": deallocation_result
     }
 
-def deallocate(resource, deallocation):
+def deallocate(resource, deallocation, bundle):
+    uri = bundle['uri']
+    token = bundle['token']
+    cert = bundle['cert']
     ip_range_id = deallocation["ipRangeId"]
     ip = deallocation["ipAddress"]
     resource_id = resource["id"]
 
     logging.info(f"Deallocating ip {ip} from range {ip_range_id}")
 
-    ## Plug your implementation here to deallocate an already allocated ip address
-    ## ...
-    ## Deallocation successful
-
+    deallocate_uri = f'{uri}/addresses/{ip}/{ip_range_id}/'
+    requests.delete(deallocate_uri, headers=token, verify=cert)
     return {
         "ipDeallocationId": deallocation["id"],
         "message": "Success"
