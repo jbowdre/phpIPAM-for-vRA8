@@ -110,7 +110,7 @@ def do_allocate_ip(self, auth_credentials, cert):
             allocation_result.append(allocate(resource, allocation, self.context, self.inputs["endpoint"], bundle))
     except Exception as e:
         try:
-            rollback(allocation_result)
+            rollback(allocation_result, bundle)
         except Exception as rollback_e:
             logging.error(f"Error during rollback of allocation result {str(allocation_result)}")
             logging.error(rollback_e)
@@ -149,24 +149,18 @@ def allocate_in_range(range_id, resource, allocation, context, endpoint, bundle)
         'description': f'Reserved by vRA for {owner} at {datetime.now()}'
       }
       allocate_uri = f'{uri}/addresses/first_free/{str(range_id)}/'
-      req = requests.post(allocate_uri, data=payload, token=token, verify=cert)
-      result = {
-        "ipAllocationId": allocation['id'],
-        "ipRangeId": range_id,
-        "ipVersion": 
-      }
-
-      
-
-
-      result = {
-          "ipAllocationId": allocation["id"],
+      allocate_req = requests.post(allocate_uri, data=payload, headers=token, verify=cert)
+      allocate_req = allocate_req.json()
+      if allocate_req['success']:
+        result = {
+          "ipAllocationId": allocation['id'],
           "ipRangeId": range_id,
-          "ipVersion": "IPv4"
-      }
-
-      result["ipAddresses"] = ["10.23.117.5"]
-      result["properties"] = {"customPropertyKey1": "customPropertyValue1"}
+          "ipVersion": "IPv4",
+          "ipAddresses": [allocate_req['data']] 
+        }
+        logging.info(f"Successfully reserved {str(result['ipAddresses'])} for {vmName}.")
+      else:
+        raise Exception("Unable to allocate IP!")
 
       return result
     else:
@@ -175,11 +169,15 @@ def allocate_in_range(range_id, resource, allocation, context, endpoint, bundle)
     raise Exception("Not implemented")
 
 ## Rollback any previously allocated addresses in case this allocation request contains multiple ones and failed in the middle
-def rollback(allocation_result):
+def rollback(allocation_result, bundle):
+    uri = bundle['uri']
+    token = bundle['token']
+    cert = bundle['cert']
     for allocation in reversed(allocation_result):
         logging.info(f"Rolling back allocation {str(allocation)}")
         ipAddresses = allocation.get("ipAddresses", None)
-
-        ## release the address
+        for ipAddress in ipAddresses:
+          rollback_uri = f'{uri}/addresses/{allocation.get("id")}/'
+          requests.delete(rollback_uri, headers=token, verify=cert)
 
     return
