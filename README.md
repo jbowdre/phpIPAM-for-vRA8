@@ -6,7 +6,7 @@ This integration allows vRealize Automation 8.x to use [phpIPAM](https://phpipam
 Prerequisite:
 ===============
 
-phpIPAM must be installed, configured, and available over HTTPS. A trusted SSL certificate is not required; vRA will prompt to confirm the certificate when the connection is initially validated.
+phpIPAM must be installed, configured, and available over HTTPS. Subnets must be defined, and those which should be available to vRA need to be marked as a pool. A trusted SSL certificate is not required; vRA will prompt to confirm the certificate when the connection is initially validated.
 
 Usage
 ===============
