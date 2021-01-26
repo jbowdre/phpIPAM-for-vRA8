@@ -72,8 +72,8 @@ def do_get_ip_ranges(self, auth_credentials, cert):
         logging.info(f"Found subnet: {ipRange['name']} - {ipRange['description']}.")
         network = ipaddress.ip_network(str(subnet['subnet']) + '/' + str(subnet['mask']))
         ipRange['ipVersion'] = 'IPv' + str(network.version)
-        ipRange['startIPAddress'] = str(network[10])
-        ipRange['endIPAddress'] = str(network[-6])
+        ipRange['startIPAddress'] = str(network[1])
+        ipRange['endIPAddress'] = str(network[-2])
         ipRange['subnetPrefixLength'] = str(subnet['mask'])
         # return empty set if no nameservers are defined in IPAM
         try:
