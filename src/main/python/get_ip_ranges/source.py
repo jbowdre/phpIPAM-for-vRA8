@@ -75,7 +75,12 @@ def do_get_ip_ranges(self, auth_credentials, cert):
         ipRange['startIPAddress'] = str(network[10])
         ipRange['endIPAddress'] = str(network[-6])
         ipRange['subnetPrefixLength'] = str(subnet['mask'])
-        ipRange['dnsServerAddresses'] = [server.strip() for server in str(subnet['nameservers']['namesrv1']).split(';')]
+        # return empty set if no nameservers are defined in IPAM
+        try:
+          ipRange['dnsServerAddresses'] = [server.strip() for server in str(subnet['nameservers']['namesrv1']).split(';')]
+        except:
+          ipRange['dnsServerAddresses'] = []
+        # try to get the address marked as the gateway in IPAM  
         gw_req = requests.get(f"{subnet_uri}/{subnet['id']}/addresses/?filter_by=is_gateway&filter_value=1", headers=token, verify=cert)
         if gw_req.status_code == 200:
           gateway = gw_req.json()['data'][0]['ip']
