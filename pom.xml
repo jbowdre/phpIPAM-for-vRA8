@@ -23,7 +23,7 @@ conditions of the subcomponent's license, as noted in the LICENSE file.
     <properties>
         <provider.name>phpIPAM</provider.name>
         <provider.description>phpIPAM integration for vRA</provider.description>
-        <provider.version>1.0.1</provider.version>
+        <provider.version>1.0.2</provider.version>
 
         <provider.supportsAddressSpaces>false</provider.supportsAddressSpaces>
         <provider.supportsUpdateRecord>true</provider.supportsUpdateRecord>
