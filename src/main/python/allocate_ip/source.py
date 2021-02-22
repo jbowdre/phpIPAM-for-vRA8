@@ -15,6 +15,7 @@ import requests
 from vra_ipam_utils.ipam import IPAM
 import logging
 from datetime import datetime
+import ipaddress
 
 """
 Example payload
@@ -153,10 +154,11 @@ def allocate_in_range(range_id, resource, allocation, context, endpoint, bundle)
       allocate_req = requests.post(allocate_uri, data=payload, headers=token, verify=cert)
       allocate_req = allocate_req.json()
       if allocate_req['success']:
+        version = ipaddress.ip_address(allocate_req['data']).version
         result = {
           "ipAllocationId": allocation['id'],
           "ipRangeId": range_id,
-          "ipVersion": "IPv4",
+          "ipVersion": "IPv" + str(version),
           "ipAddresses": [allocate_req['data']] 
         }
         logging.info(f"Successfully reserved {str(result['ipAddresses'])} for {vmName}.")
