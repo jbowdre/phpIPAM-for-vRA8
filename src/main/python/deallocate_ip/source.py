@@ -107,7 +107,6 @@ def deallocate(resource, deallocation, bundle):
     cert = bundle['cert']
     ip_range_id = deallocation["ipRangeId"]
     ip = deallocation["ipAddress"]
-    resource_id = resource["id"]
 
     logging.info(f"Deallocating ip {ip} from range {ip_range_id}")
 
