@@ -3,10 +3,13 @@ phpIPAM Integration for vRealize Automation 8.x
 
 This integration allows vRealize Automation 8.x to use [phpIPAM](https://phpipam.net) for assigning static IP addresses to provisioned virtual machines. Built against vRA 8.2.0.12946 and phpIPAM 1.5.
 
+Details on how I built this (as well as notes on how I configured phpIPAM to work correctly with this plugin) can be found here:
+https://virtuallypotato.com/integrating-phpipam-with-vrealize-automation-8
+
 Prerequisite:
 ===============
 
-phpIPAM 1.5 must be installed, configured, and available over HTTPS. Subnets must be defined, and those which should be available to vRA need to be marked as a pool. A trusted SSL certificate is not required; vRA will prompt to confirm the certificate when the connection is initially validated.
+phpIPAM 1.5 must be [installed, configured, and available over HTTPS](https://virtuallypotato.com/integrating-phpipam-with-vrealize-automation-8#step-0-phpipam-installation-and-base-configuration). Subnets [must be defined, and those which should be available to vRA need to be marked as a pool](https://virtuallypotato.com/integrating-phpipam-with-vrealize-automation-8#step-2-configuring-phpipam-subnets). A trusted SSL certificate is not required; vRA will prompt to confirm the certificate when the connection is initially validated.
 
 Usage
 ===============
