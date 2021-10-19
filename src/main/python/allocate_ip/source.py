@@ -142,13 +142,12 @@ def allocate(resource, allocation, context, endpoint, bundle):
 def allocate_in_range(range_id, resource, allocation, context, endpoint, bundle):
     if int(allocation['size']) ==1:
       vmName = resource['name']
-      owner = resource['owner']
       uri = bundle['uri']
       token = bundle['token']
       cert = bundle['cert']
       payload = {
         'hostname': vmName,
-        'description': f'Reserved by vRA for {owner} at {datetime.now()}'
+        'description': f'Reserved by vRA at {datetime.now()}'
       }
       allocate_uri = f'{uri}/addresses/first_free/{str(range_id)}/'
       allocate_req = requests.post(allocate_uri, data=payload, headers=token, verify=cert)
