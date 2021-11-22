@@ -145,9 +145,14 @@ def allocate_in_range(range_id, resource, allocation, context, endpoint, bundle)
       uri = bundle['uri']
       token = bundle['token']
       cert = bundle['cert']
+      # Attempt to grab 'owner' to work around bug in vRA 8.6 (fixed in 8.6.1)
+      try:
+        owner_string = f" for {resource['owner']} "
+      except:
+        owner_string = " "
       payload = {
         'hostname': vmName,
-        'description': f'Reserved by vRA at {datetime.now()}'
+        'description': f'Reserved by vRA{owner_string}at {datetime.now()}'
       }
       allocate_uri = f'{uri}/addresses/first_free/{str(range_id)}/'
       allocate_req = requests.post(allocate_uri, data=payload, headers=token, verify=cert)
