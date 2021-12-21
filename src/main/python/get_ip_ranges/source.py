@@ -55,6 +55,7 @@ def do_get_ip_ranges(self, auth_credentials, cert):
     password = auth_credentials["privateKey"]
     hostname = self.inputs["endpoint"]["endpointProperties"]["hostName"]
     apiAppId = self.inputs["endpoint"]["endpointProperties"]["apiAppId"]
+    filterPool = self.inputs["endpoint"]["endpointProperties"]["filterPool"]
     uri = f'https://{hostname}/api/{apiAppId}/'
     auth = (username, password)
 
@@ -63,8 +64,12 @@ def do_get_ip_ranges(self, auth_credentials, cert):
 
     # Request list of subnets
     subnet_uri = f'{uri}/subnets/'
+    if filterPool == "true":
+      queryFilter = 'filter_by=isPool&filter_value=1'
+    else:
+      queryFilter = ''
     ipRanges = []
-    subnets = requests.get(f'{subnet_uri}?filter_by=isPool&filter_value=1', headers=token, verify=cert)
+    subnets = requests.get(f'{subnet_uri}?{queryFilter}', headers=token, verify=cert)
     subnets = subnets.json()['data']
     for subnet in subnets:
         ipRange = {}
