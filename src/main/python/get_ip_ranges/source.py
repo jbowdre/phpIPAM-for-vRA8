@@ -84,7 +84,7 @@ def do_get_ip_ranges(self, auth_credentials, cert):
           ipRange['dnsServerAddresses'] = []
         # try to get the address marked as the gateway in IPAM  
         gw_req = requests.get(f"{subnet_uri}/{subnet['id']}/addresses/?filter_by=is_gateway&filter_value=1", headers=token, verify=cert)
-        if gw_req.status_code == 200:
+        if gw_req.status_code == 200 and not 'data' in gw_req.json():
           gateway = gw_req.json()['data'][0]['ip']
           ipRange['gatewayAddress'] = gateway
         logging.debug(ipRange)
