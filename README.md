@@ -9,7 +9,7 @@ https://virtuallypotato.com/integrating-phpipam-with-vrealize-automation-8
 Prerequisite:
 ===============
 
-phpIPAM 1.5 must be [installed, configured, and available over HTTPS](https://virtuallypotato.com/integrating-phpipam-with-vrealize-automation-8#step-0-phpipam-installation-and-base-configuration). Subnets [must be defined, and those which should be available to vRA need to be marked as a pool](https://virtuallypotato.com/integrating-phpipam-with-vrealize-automation-8#step-2-configuring-phpipam-subnets). A trusted SSL certificate is not required; vRA will prompt to confirm the certificate when the connection is initially validated.
+phpIPAM 1.5 must be [installed, configured, and available over HTTPS](https://virtuallypotato.com/integrating-phpipam-with-vrealize-automation-8#step-0-phpipam-installation-and-base-configuration). Subnets [must be defined, and those which should be available to vRA need to be marked as a pool](https://virtuallypotato.com/integrating-phpipam-with-vrealize-automation-8#step-2-configuring-phpipam-subnets) (marking as pool is optional as of [v1.0.6](https://github.com/jbowdre/phpIPAM-for-vRA8/releases/tag/v1.0.6)). A trusted SSL certificate is not required; vRA will prompt to confirm the certificate when the connection is initially validated.
 
 Usage
 ===============
