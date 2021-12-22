@@ -1,3 +1,6 @@
+# v1.0.8
+Fix gateway check logic
+
 # v1.0.7
 Enable optional custom subnet filter
 
