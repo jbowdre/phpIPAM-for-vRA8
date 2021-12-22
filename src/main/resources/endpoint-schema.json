@@ -25,8 +25,32 @@
                         "display":"textField"
                      },
                      {
-                        "id":"filterPool",
+                        "id":"enableFilter",
                         "display": "checkbox"
+                     },
+                     {
+                        "id":"filterField",
+                        "display":"textField",
+                        "state":{
+                           "visible":[{
+                              "equals":{
+                                 "enableFilter":true
+                              },
+                              "value":true
+                           }]
+                        }
+                     },
+                     {
+                        "id":"filterValue",
+                        "display":"textField",
+                        "state":{
+                           "visible":[{
+                              "equals":{
+                                 "enableFilter":true
+                              },
+                              "value":true
+                           }]
+                        }
                      }
                   ]
                }
@@ -71,14 +95,47 @@
             "required":true
          }
       },
-      "filterPool":{
+      "enableFilter":{
          "type":{
             "dataType":"boolean"
          },
-         "label":"Only find ranges marked as Pools",
-         "signpost":"If enabled, vRA will only retrieve subnets marked as pools in phpIPAM",
+         "label":"Subnets must match filter",
+         "signpost":"Enable to only retrieve subnets matching a designated filter. Useful for limiting the discovery scope to subnets which should be owned/managed by vRA.",
          "default":true
+      },
+      "filterField":{
+         "type":{
+            "dataType":"string"
+         },
+         "label":"Field for filter",
+         "signpost":"'isPool' to match subnets marked as IP Pools. See the <a href='https://phpipam.net/api/api_documentation/'>phpIPAM API documentation</a>.",
+         "constraints":{
+            "required":[{
+               "equals":{
+                  "enableFilter":true
+               },
+               "value":true
+            }]
+         },
+         "default":"isPool"
+      },
+      "filterValue":{
+         "type":{
+            "dataType":"string"
+         },
+         "label":"Value for filter",
+         "signpost":"'1' to match filters which are true",
+         "constraints":{
+            "required":[{
+               "equals":{
+                  "enableFilter":true
+               },
+               "value":true
+            }]
+         },
+         "default":"1"
       }
+
    },
    "options":{
 

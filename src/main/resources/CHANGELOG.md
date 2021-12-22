@@ -1,3 +1,6 @@
+# v1.0.7
+Enable optional custom subnet filter
+
 # v1.0.6
 Fix for [an error](https://github.com/jbowdre/phpIPAM-for-vRA8/issues/3) when a subnet doesn't have a defined gateway.
 
