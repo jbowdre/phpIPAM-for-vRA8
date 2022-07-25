@@ -108,7 +108,7 @@
             "dataType":"string"
          },
          "label":"Field for filter",
-         "signpost":"'isPool' to match subnets marked as IP Pools. See the <a href='https://phpipam.net/api/api_documentation/'>phpIPAM API documentation</a>.",
+         "signpost":"'custom_vRA_Range' to match subnets with custom field 'vRA_Range'. See the <a href='https://github.com/jbowdre/phpIPAM-for-vRA8'>integration documentation</a>.",
          "constraints":{
             "required":[{
                "equals":{

@@ -1,3 +1,6 @@
+# v1.0.9
+Improve documentation on subnet filter usage
+
 # v1.0.8
 Fix gateway check logic
 
