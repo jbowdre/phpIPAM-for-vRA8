@@ -1,6 +1,6 @@
 # User libs go here
 #
-requests==2.21.0
+requests==2.32.2
 #
 # ----------------- #
 #
