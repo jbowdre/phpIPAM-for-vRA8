@@ -2,7 +2,7 @@
 This integration allows vRealize Automation 8.x to use [phpIPAM](https://phpipam.net) for assigning static IP addresses to provisioned virtual machines. Built against vRA 8.2.0.12946 and phpIPAM 1.5.
 
 Details on how I built this (as well as notes on how I configured phpIPAM to work correctly with this plugin) can be found here:
-https://virtuallypotato.com/integrating-phpipam-with-vrealize-automation-8
+https://runtimeterror.dev/integrating-phpipam-with-vrealize-automation-8/
 
 > [!IMPORTANT]
 > This project is no longer being maintained. I'm sure it's quite out of date at this point. Feel free to fork it and use it as a starting point for your own work, but I don't have a vRA/Aria environment or the time/energy to update it anymore.
@@ -11,7 +11,7 @@ https://virtuallypotato.com/integrating-phpipam-with-vrealize-automation-8
 
 - phpIPAM 1.5 must be installed, configured, and available over HTTPS
   - Consult the [phpIPAM installation docs](https://phpipam.net/documents/installation/)
-- Subnets [must be defined in phpIPAM](https://virtuallypotato.com/integrating-phpipam-with-vrealize-automation-8#step-2-configuring-phpipam-subnets).
+- Subnets [must be defined in phpIPAM](https://runtimeterror.dev/integrating-phpipam-with-vrealize-automation-8/#step-2-configuring-phpipam-subnets).
 - (Optional) A [Custom Field](docs/custom_field.md) defined to identify subnets which should be available to vRA.
   - Note: I previously used the built-in `isPool` field, but this is not ideal with versions of phpIPAM 1.5 since a [change on April 4, 2022](https://github.com/phpipam/phpipam/commit/7de080b8) which made the subnet and broadcast addresses (`x.x.x.0` and `x.x.x.255`) assignable on networks with this field set. Use a [Custom Field](docs/custom_field.md) instead. 
 - A trusted SSL certificate is not required; vRA will prompt to confirm the certificate when the connection is initially validated.
