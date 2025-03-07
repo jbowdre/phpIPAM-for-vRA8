@@ -4,6 +4,9 @@ This integration allows vRealize Automation 8.x to use [phpIPAM](https://phpipam
 Details on how I built this (as well as notes on how I configured phpIPAM to work correctly with this plugin) can be found here:
 https://virtuallypotato.com/integrating-phpipam-with-vrealize-automation-8
 
+> [!IMPORTANT]
+> This project is no longer being maintained. I'm sure it's quite out of date at this point. Feel free to fork it and use it as a starting point for your own work, but I don't have a vRA/Aria environment or the time/energy to update it anymore.
+
 ## Prerequisites
 
 - phpIPAM 1.5 must be installed, configured, and available over HTTPS
